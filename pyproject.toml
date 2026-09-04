@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "agentic-eval-harness"
+version = "1.0.0"
+description = "Automated Agentic Evaluation Harness for Legacy Codebases"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pytest>=7.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest-cov>=4.0", "black>=23.0", "flake8>=6.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
