@@ -6,7 +6,7 @@ import time
 from typing import Any, Optional
 
 
-class TestResult:
+class ValidationResult:
     """Result of a single test case execution."""
 
     def __init__(
@@ -97,7 +97,7 @@ class MultiEdgeCaseValidator:
         self,
         executable_path: Optional[str] = None,
         timeout_ms: int = 5000,
-    ) -> list[TestResult]:
+    ) -> list[ValidationResult]:
         """Run all test cases against the executable.
 
         Args:
@@ -110,7 +110,7 @@ class MultiEdgeCaseValidator:
         exe = executable_path or self.executable_path
         if not exe or not os.path.isfile(exe):
             return [
-                TestResult(
+                ValidationResult(
                     test_id=tc["id"],
                     input_data=tc["input"],
                     expected_output=tc["expected"],
@@ -138,7 +138,7 @@ class MultiEdgeCaseValidator:
                 expected = tc["expected"].strip()
                 passed = actual == expected
                 results.append(
-                    TestResult(
+                    ValidationResult(
                         test_id=tc["id"],
                         input_data=tc["input"],
                         expected_output=tc["expected"],
@@ -151,7 +151,7 @@ class MultiEdgeCaseValidator:
             except subprocess.TimeoutExpired:
                 elapsed_ms = (time.perf_counter() - start) * 1000
                 results.append(
-                    TestResult(
+                    ValidationResult(
                         test_id=tc["id"],
                         input_data=tc["input"],
                         expected_output=tc["expected"],
@@ -164,7 +164,7 @@ class MultiEdgeCaseValidator:
             except Exception as e:
                 elapsed_ms = (time.perf_counter() - start) * 1000
                 results.append(
-                    TestResult(
+                    ValidationResult(
                         test_id=tc["id"],
                         input_data=tc["input"],
                         expected_output=tc["expected"],
@@ -177,7 +177,7 @@ class MultiEdgeCaseValidator:
 
         return results
 
-    def generate_summary(self, results: list[TestResult]) -> dict:
+    def generate_summary(self, results: list[ValidationResult]) -> dict:
         """Generate a summary of validation results.
 
         Args:

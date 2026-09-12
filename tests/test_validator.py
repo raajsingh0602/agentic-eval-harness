@@ -6,7 +6,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from src.evaluators.test_validator import MultiEdgeCaseValidator, TestResult
+from src.evaluators.test_validator import MultiEdgeCaseValidator, ValidationResult
 
 
 class TestMultiEdgeCaseValidator:
@@ -37,9 +37,9 @@ class TestMultiEdgeCaseValidator:
     def test_generate_summary(self):
         validator = MultiEdgeCaseValidator()
         results = [
-            TestResult("t1", "1", "1", "1", True, 1.0),
-            TestResult("t2", "2", "2", "3", False, 1.0),
-            TestResult("t3", "3", "3", "3", True, 1.0),
+            ValidationResult("t1", "1", "1", "1", True, 1.0),
+            ValidationResult("t2", "2", "2", "3", False, 1.0),
+            ValidationResult("t3", "3", "3", "3", True, 1.0),
         ]
         summary = validator.generate_summary(results)
         assert summary["total_tests"] == 3
@@ -48,7 +48,7 @@ class TestMultiEdgeCaseValidator:
         assert summary["pass_rate"] == pytest.approx(66.67, rel=0.01)
 
     def test_test_result_to_dict(self):
-        tr = TestResult("t1", "input", "expected", "actual", True, 5.5, "desc")
+        tr = ValidationResult("t1", "input", "expected", "actual", True, 5.5, "desc")
         d = tr.to_dict()
         assert d["test_id"] == "t1"
         assert d["passed"] is True
