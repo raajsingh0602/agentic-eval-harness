@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 # Compile legacy C++ and Rust
 cd legacy_cpp && make all
-cd ../legacy_rust && cargo build
+cd ../legacy_rust && make all
 
 # Run tests
 pytest tests/ -v

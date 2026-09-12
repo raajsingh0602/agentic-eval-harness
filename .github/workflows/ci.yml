@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   test:
@@ -21,15 +21,13 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
+          pip install -e .
 
       - name: Compile C++ legacy code
         run: cd legacy_cpp && make all
 
       - name: Compile Rust legacy code
-        run: |
-          cd legacy_rust
-          rustc legacy_compute.rs -o legacy_compute --edition 2021
-          rustc optimized_compute.rs -o optimized_compute --edition 2021
+        run: cd legacy_rust && make all
 
       - name: Run tests
         run: pytest tests/ -v --tb=short
@@ -46,4 +44,5 @@ jobs:
           path: |
             tests/
             legacy_cpp/*.o
-            legacy_rust/target/
+            legacy_rust/legacy_compute
+            legacy_rust/optimized_compute
