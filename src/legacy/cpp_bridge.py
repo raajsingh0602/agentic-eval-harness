@@ -136,11 +136,20 @@ class CPPLegacyBridge:
                     executable_path, timeout_ms=timeout_ms, input_data=inp
                 )
                 times.append(run_result["exec_time_ms"])
-            results[f"input_{i}"] = {
-                "input": inp[:100],
-                "times_ms": times,
-                "avg_ms": round(sum(times) / len(times), 3),
-                "min_ms": round(min(times), 3),
-                "max_ms": round(max(times), 3),
-            }
+            if times:
+                results[f"input_{i}"] = {
+                    "input": inp[:100],
+                    "times_ms": times,
+                    "avg_ms": round(sum(times) / len(times), 3),
+                    "min_ms": round(min(times), 3),
+                    "max_ms": round(max(times), 3),
+                }
+            else:
+                results[f"input_{i}"] = {
+                    "input": inp[:100],
+                    "times_ms": [],
+                    "avg_ms": 0.0,
+                    "min_ms": 0.0,
+                    "max_ms": 0.0,
+                }
         return results
