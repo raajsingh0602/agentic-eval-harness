@@ -185,7 +185,9 @@ class TestRustLegacyBridgeWithRust:
         if not compute_executables["legacy"]:
             pytest.skip("Rust compiler not available")
         result = bridge.run(compute_executables["legacy"], args=["invalid"])
-        assert result["returncode"] != 0 or "error" in result["stderr"].lower()
+        # Rust falls back to default (30) on parse error
+        assert result["returncode"] == 0
+        assert "fibonacci(30) = 832040" in result["stdout"]
 
     def test_benchmark_fibonacci(self, compute_executables, bridge):
         if not compute_executables["legacy"] or not compute_executables["optimized"]:
